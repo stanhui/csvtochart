@@ -2,3 +2,4 @@ dist/
 csvtochart
 *.csv
 *.html
+!examples/*.html

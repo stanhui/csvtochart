@@ -4,42 +4,47 @@
 
 Convert bandwidth CSV data into a Grafana-style offline interactive HTML chart.
 
-## Features / 功能
+## Screenshot / 效果展示
 
-- 生成完全离线的 HTML 图表（ECharts 内嵌，无需网络）
-- 支持指定 CSV 中带宽数据的单位（bps / Kbps / Mbps / Gbps / Tbps）
-- 深色/浅色主题一键切换
-- 图例多选独显（Isolate）/ 隐藏（Hide）模式
-- 时间轴缩放（滑块 + 鼠标滚轮）
-- Y 轴自动换算显示单位（1000 进制）
+> 打开 `examples/bandwidth_chart.html` 即可在浏览器中查看完整交互效果。
 
----
+![Dark Theme](screenshots/dark.png)
+![Light Theme](screenshots/light.png)
 
-- Generates fully offline HTML charts (ECharts embedded, no network needed)
-- Supports specifying the bandwidth unit in CSV (bps / Kbps / Mbps / Gbps / Tbps)
-- Dark/light theme toggle
-- Legend multi-select isolate / hide modes
-- Time-axis zoom (slider + mouse wheel)
-- Y-axis auto-scales display unit (1000-based)
+**图表特性 / Chart Features:**
+- 🌗 深色/浅色主题切换 (Dark/Light theme toggle)
+- 🔍 Isolate 模式：单击图例多选独显 (Click legend to multi-select & isolate)
+- 🚫 Hide 模式：单击图例隐藏指定线 (Click legend to hide lines)
+- 📊 时间轴缩放 (Time-axis zoom with slider & mouse wheel)
+- 📐 Y 轴自动换算单位 (Auto unit: bps → Kbps → Mbps → Gbps → Tbps, 1000-based)
+- 📡 完全离线，无需网络 (Fully offline, no network needed)
 
 ## Install / 安装
 
+### Download Binary / 下载可执行文件
+
+从 [Releases](https://github.com/stanhui/csvtochart/releases) 下载对应平台的可执行文件：
+
+| Platform | File |
+|----------|------|
+| Linux x86_64 | `csvtochart_linux_amd64` |
+| Linux ARM64 | `csvtochart_linux_arm64` |
+| macOS Intel | `csvtochart_darwin_amd64` |
+| macOS Apple Silicon | `csvtochart_darwin_arm64` |
+| Windows x86_64 | `csvtochart_windows_amd64.exe` |
+
+### Build from Source / 从源码编译
+
 ```bash
-go install github.com/user/csvtochart@latest
+go install github.com/stanhui/csvtochart@latest
 ```
 
-Or build from source:
+Or:
 
 ```bash
-git clone https://github.com/user/csvtochart.git
+git clone https://github.com/stanhui/csvtochart.git
 cd csvtochart
 go build -o csvtochart .
-```
-
-Cross-compile for macOS Apple Silicon:
-
-```bash
-GOOS=darwin GOARCH=arm64 go build -o csvtochart_darwin_arm64 .
 ```
 
 ## Usage / 用法
@@ -65,14 +70,14 @@ csvtochart -unit Gbps -title "CDN Bandwidth" data.csv report.html
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `-unit` | `bps` | CSV 中带宽数据的单位 / Unit of bandwidth values in CSV: `bps`, `Kbps`, `Mbps`, `Gbps`, `Tbps` |
+| `-unit` | `bps` | CSV 中带宽数据的单位 / Unit of values in CSV: `bps`, `Kbps`, `Mbps`, `Gbps`, `Tbps` |
 | `-title` | 文件名 | 图表标题 / Chart title |
 
 ### Input CSV Format / 输入格式
 
 第一列为时间戳，其余列为带宽数值，列名即为图表中的系列名称：
 
-Column 0 = timestamps, remaining columns = bandwidth values. Column names become series names in the chart.
+Column 0 = timestamps, remaining columns = bandwidth values. Column names become series names.
 
 ```csv
 ,domain1.com,domain2.com,domain3.com
@@ -80,19 +85,9 @@ Column 0 = timestamps, remaining columns = bandwidth values. Column names become
 2025-01-01 00:05:00,110.2,190.1,160.5
 ```
 
-> 第一列列名可以为空（如上例），数据行第一列为时间。
-
-### Chart Interaction / 图表交互
-
-- **☀ Light / 🌙 Dark** — 切换深色/浅色主题
-- **● Isolate** — 单击右侧图例选中域名（可多选），选中线高亮，tooltip 只显示选中数据
-- **✕ Hide** — 切换到隐藏模式，单击图例隐藏/显示指定线
-- **Show All** — 恢复显示全部
-- **底部滑块 / 鼠标滚轮** — 时间轴缩放
-
 ### Unit Conversion / 单位换算
 
-Y 轴和 Tooltip 使用 **1000 进制**：
+Y 轴和 Tooltip 使用 **1000 进制**（网络带宽标准）：
 
 | Unit | = bps |
 |------|-------|
@@ -100,6 +95,15 @@ Y 轴和 Tooltip 使用 **1000 进制**：
 | 1 Mbps | 1,000,000 bps |
 | 1 Gbps | 1,000,000,000 bps |
 | 1 Tbps | 1,000,000,000,000 bps |
+
+## Release / 发布
+
+打 tag 后 GitHub Actions 自动编译并发布所有平台的可执行文件：
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
 
 ## License
 
