@@ -1,0 +1,4 @@
+dist/
+csvtochart
+*.csv
+*.html
